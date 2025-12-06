@@ -1,0 +1,82 @@
+Q.1) View data 
+SELECT * FROM employee_attrition LIMIT 10;
+
+Q.2) Total number of employees
+SELECT COUNT(*) FROM employee_attrition;
+
+Q.3) Gender distribution
+SELECT Gender, COUNT(*) 
+FROM employee_attrition
+GROUP BY Gender;
+
+Q.4) Attrition count
+SELECT Attrition, COUNT(*) 
+FROM employee_attrition
+GROUP BY Attrition;
+
+Q.5) Department-wise Attrition
+SELECT Department, Attrition, COUNT(*)
+FROM employee_attrition
+GROUP BY Department, Attrition
+ORDER BY Department;
+
+Q.6) Average Monthly Income by JobRole
+SELECT JobRole, AVG(MonthlyIncome) AS avg_income
+FROM employee_attrition
+GROUP BY JobRole
+ORDER BY avg_income DESC;
+
+Q.7) Overtime vs Attrition
+SELECT OverTime, Attrition, COUNT(*)
+FROM employee_attrition
+GROUP BY OverTime, Attrition;
+
+Q.8) Average Age of Employees Who Left
+SELECT EmployeeNumber, JobSatisfaction
+FROM employee_attrition
+WHERE Attrition = 'Yes' AND JobSatisfaction <= 2;
+
+Q.9) Employees with low job satisfaction who left
+SELECT EmployeeNumber, JobSatisfaction
+FROM employee_attrition
+WHERE Attrition = 'Yes' AND JobSatisfaction <= 2;
+
+Q.10) Attrition Rate
+SELECT 
+    (SUM(CASE WHEN Attrition = 'Yes' THEN 1 ELSE 0 END) * 100.0) / COUNT(*) 
+    AS attrition_rate
+FROM employee_attrition;
+
+Q.11) Department-wise Avg Work Life Balance
+SELECT Department, AVG(WorkLifeBalance) AS avg_wlb
+FROM employee_attrition
+GROUP BY Department;
+
+Q.12) High salary employees who left
+SELECT EmployeeNumber, MonthlyIncome
+FROM employee_attrition
+WHERE Attrition = 'Yes'
+ORDER BY MonthlyIncome DESC
+LIMIT 20;
+
+Q.13) Which job role has highest attrition?
+SELECT JobRole, COUNT(*) AS attrition_count
+FROM employee_attrition
+WHERE Attrition = 'Yes'
+GROUP BY JobRole
+ORDER BY attrition_count DESC;
+
+Q.14) Overtime + Attrition risk
+SELECT OverTime,
+       SUM(CASE WHEN Attrition = 'Yes' THEN 1 ELSE 0 END) AS left_count,
+       COUNT(*) AS total_count,
+       (SUM(CASE WHEN Attrition = 'Yes' THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) AS attrition_percentage
+FROM employee_attrition
+GROUP BY OverTime;
+
+Q.15) Predictive Feature: Years at Company & Attrition
+SELECT 
+    ROUND(AVG(YearsAtCompany), 2) AS avg_years_stayed,
+    Attrition
+FROM employee_attrition
+GROUP BY Attrition;
